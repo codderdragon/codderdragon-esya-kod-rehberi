@@ -1,0 +1,373 @@
+<title>Eşya Kod Rehberi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f6f3ee; --surface:#ffffff; --surface-2:#ece5d8; --border:#ddd3bf;
+  --text:#241f1a; --text-dim:#6f6459; --accent:#d9531e; --accent-ink:#fff8f2;
+  --good:#1a7a42; --good-bg:#e1f3e6; --mono-bg:#eee7d8; --shadow:0 1px 2px rgba(36,31,26,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15120f; --surface:#1e1a16; --surface-2:#262019; --border:#39301f;
+    --text:#f1ece2; --text-dim:#a89a86; --accent:#ff7a3d; --accent-ink:#1c1108;
+    --good:#4ade80; --good-bg:rgba(74,222,128,.14); --mono-bg:#262019; --shadow:0 1px 2px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15120f; --surface:#1e1a16; --surface-2:#262019; --border:#39301f;
+  --text:#f1ece2; --text-dim:#a89a86; --accent:#ff7a3d; --accent-ink:#1c1108;
+  --good:#4ade80; --good-bg:rgba(74,222,128,.14); --mono-bg:#262019; --shadow:0 1px 2px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--text); margin:0; padding-inline:16px;
+  font-family:'IBM Plex Sans',system-ui,sans-serif; line-height:1.45;
+}
+h1,h2{font-family:'Oswald',system-ui,sans-serif; text-wrap:balance; margin:0;}
+code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+a{color:var(--accent);}
+
+.wrap{max-width:920px; margin:0 auto; padding-block:28px 60px;}
+
+header.top{position:sticky; top:0; background:var(--bg); padding-block:16px 12px; z-index:5; border-bottom:1px solid var(--border);}
+.eyebrow{font-family:'Oswald',system-ui,sans-serif; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600;}
+h1{font-size:clamp(1.5rem,4vw,2.1rem); font-weight:700; letter-spacing:.01em; margin-top:2px;}
+.sub{color:var(--text-dim); font-size:.92rem; margin-top:6px; max-width:60ch;}
+
+.searchrow{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; align-items:center;}
+#q{
+  flex:1 1 240px; min-width:0; background:var(--surface); border:1px solid var(--border);
+  color:var(--text); padding:10px 14px; border-radius:8px; font:inherit; font-size:.95rem;
+}
+#q:focus{outline:2px solid var(--accent); outline-offset:1px;}
+#count{font-size:.82rem; color:var(--text-dim); white-space:nowrap;}
+
+.chips{display:flex; gap:6px; overflow-x:auto; padding-block:12px 2px; margin:0 -2px; scrollbar-width:thin;}
+.chip{
+  flex:none; font-size:.78rem; padding:5px 11px; border-radius:99px; border:1px solid var(--border);
+  background:var(--surface); color:var(--text-dim); text-decoration:none; white-space:nowrap;
+}
+.chip:hover{border-color:var(--accent); color:var(--text);}
+
+.note{
+  background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent);
+  border-radius:0 8px 8px 0; padding:12px 16px; margin-block:20px; font-size:.88rem; color:var(--text-dim);
+}
+.note b{color:var(--text); font-weight:600;}
+.note code{background:var(--mono-bg); padding:1px 5px; border-radius:4px; color:var(--text);}
+
+section.cat, details.cat{margin-top:26px; scroll-margin-top:150px;}
+.cathead{
+  display:flex; align-items:baseline; gap:10px; padding-bottom:8px; margin-bottom:2px;
+  border-bottom:2px solid var(--surface-2);
+}
+h2{font-size:1.05rem; letter-spacing:.03em; text-transform:uppercase;}
+.catcount{font-size:.78rem; color:var(--text-dim); font-family:'IBM Plex Mono',monospace;}
+details.cat summary{cursor:pointer; list-style:none;}
+details.cat summary::-webkit-details-marker{display:none;}
+details.cat summary.cathead{align-items:center;}
+details.cat summary .arrow{margin-left:auto; color:var(--text-dim); font-size:.8rem; transition:transform .15s;}
+details.cat[open] summary .arrow{transform:rotate(90deg);}
+
+.tablewrap{overflow-x:auto;}
+table{width:100%; border-collapse:collapse; margin-top:4px;}
+tr.row{border-bottom:1px solid var(--surface-2);}
+tr.row:hover{background:var(--surface);}
+td{padding:8px 6px; vertical-align:top; font-size:.92rem;}
+td.code{
+  font-family:'IBM Plex Mono',monospace; font-size:.82rem; color:var(--text);
+  background:var(--mono-bg); border-radius:6px; white-space:nowrap; width:1%;
+}
+td.name{color:var(--text);}
+td.flag{width:1%; white-space:nowrap; text-align:right;}
+.badge{
+  display:inline-block; font-size:.68rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
+  padding:2px 8px; border-radius:99px; background:var(--good-bg); color:var(--good); border:1px solid currentColor;
+}
+tr.nomatch{display:none;}
+p.empty{color:var(--text-dim); font-size:.9rem; padding:20px 4px;}
+
+footer{margin-top:40px; padding-top:16px; border-top:1px solid var(--border); color:var(--text-dim); font-size:.8rem;}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">codderdragon_inventory</div>
+    <h1>Eşya Kod Rehberi</h1>
+    <div class="sub">Bugün Türkçeleştirilen tüm eşyaların <code class="mono">/giveitem</code> kodu ↔ oyun içi görünen ismi. Admin panelinde ara, bul, ver.</div>
+    <div class="searchrow">
+      <input id="q" type="text" placeholder="Kod ya da isimle ara… (örn. pistol, esrar, sarjor)" autocomplete="off">
+      <span id="count"></span>
+    </div>
+    <nav class="chips" id="chips"></nav>
+  </header>
+
+  <p class="note">
+    <b>Kullanım:</b> <code>/giveitem [id] [kod] [miktar]</code> — komuta koyacağın kısım <b>Kod</b> sütunu.
+    Bazı silahların ismi kasıtlı olarak İngilizce/marka ismi bırakıldı çünkü GTA'nın kendi özel silah isimleri
+    (ör. <b>Walther P99</b>, <b>Tec-9</b>, <b>Violence</b>, <b>Widowmaker</b>) — bunlar çevrilmedi, tıpkı
+    <b>iPhone</b> / <b>Samsung S10</b> gibi. Yeşil <span class="badge">yeni</span> etiketli satır bu oturumda
+    eksik olduğu için sonradan eklenen eşya.
+  </p>
+
+  <div id="cats"></div>
+
+  <footer>231 eşya · qb-core/shared/items.lua içinden</footer>
+</div>
+
+<script>
+// c = kod (giveitem), n = Türkçe isim, f = 'new' rozeti (opsiyonel)
+const DATA = [
+["Yakın Dövüş",[
+  ["weapon_unarmed","Yumruk"],["weapon_dagger","Hançer"],["weapon_bat","Beyzbol Sopası"],
+  ["weapon_bottle","Kırık Şişe"],["weapon_crowbar","Manivela"],["weapon_flashlight","El Feneri"],
+  ["weapon_golfclub","Golf Sopası"],["weapon_hammer","Çekiç"],["weapon_hatchet","Balta"],
+  ["weapon_knuckle","Muşta"],["weapon_knife","Bıçak"],["weapon_machete","Pala"],
+  ["weapon_switchblade","Sustalı Bıçak"],["weapon_nightstick","Cop"],["weapon_wrench","İngiliz Anahtarı"],
+  ["weapon_battleaxe","Savaş Baltası"],["weapon_poolcue","Bilardo İsteka"],["weapon_briefcase","Evrak Çantası"],
+  ["weapon_briefcase_02","Bavul"],["weapon_garbagebag","Çöp Torbası"],["weapon_handcuffs","Kelepçe"],
+  ["weapon_bread","Baget"],["weapon_stone_hatchet","Taş Balta"],["weapon_candycane","Şeker Bastonu"]
+]],
+["Tabancalar",[
+  ["weapon_pistol","Walther P99"],["weapon_pistol_mk2","Tabanca Mk II"],["weapon_combatpistol","Combat Tabanca"],
+  ["weapon_appistol","AP Tabanca"],["weapon_stungun","Elektroşok Tabancası"],["weapon_pistol50","Tabanca .50"],
+  ["weapon_snspistol","SNS Tabanca"],["weapon_heavypistol","Ağır Tabanca"],["weapon_vintagepistol","Antika Tabanca"],
+  ["weapon_flaregun","İşaret Fişeği Tabancası"],["weapon_marksmanpistol","Nişancı Tabancası"],
+  ["weapon_revolver","Kovboy Tabancası"],["weapon_revolver_mk2","Violence"],
+  ["weapon_doubleaction","Çift Etkili Kovboy Tabancası"],["weapon_snspistol_mk2","SNS Tabanca Mk II"],
+  ["weapon_raypistol","Up-n-Atomizer"],["weapon_ceramicpistol","Seramik Tabanca"],
+  ["weapon_navyrevolver","Deniz Kuvvetleri Tabancası"],["weapon_gadgetpistol","Perico Pistol"],
+  ["weapon_pistolxm3","Tabanca XM3"]
+]],
+["Hafif Otomatikler",[
+  ["weapon_microsmg","Mikro Hafif Otomatik"],["weapon_smg","Hafif Otomatik"],
+  ["weapon_smg_mk2","Hafif Otomatik Mk II"],["weapon_assaultsmg","Hücum Hafif Otomatiği"],
+  ["weapon_combatpdw","Combat PDW"],["weapon_machinepistol","Tec-9"],
+  ["weapon_minismg","Mini Hafif Otomatik"],["weapon_raycarbine","Unholy Hellbringer"]
+]],
+["Pompalı Tüfekler",[
+  ["weapon_pumpshotgun","Pompalı Tüfek"],["weapon_sawnoffshotgun","Kesik Namlulu Pompalı"],
+  ["weapon_assaultshotgun","Hücum Pompalısı"],["weapon_bullpupshotgun","Bullpup Pompalı"],
+  ["weapon_musket","Misket Tüfeği"],["weapon_heavyshotgun","Ağır Pompalı"],
+  ["weapon_dbshotgun","Çift Namlulu Pompalı"],["weapon_autoshotgun","Otomatik Pompalı"],
+  ["weapon_pumpshotgun_mk2","Pompalı Tüfek Mk II"],["weapon_combatshotgun","Combat Pompalı"]
+]],
+["Hücum Tüfekleri",[
+  ["weapon_assaultrifle","Hücum Tüfeği"],["weapon_assaultrifle_mk2","Hücum Tüfeği Mk II"],
+  ["weapon_carbinerifle","Karabina"],["weapon_carbinerifle_mk2","Karabina Mk II"],
+  ["weapon_advancedrifle","Gelişmiş Tüfek"],["weapon_specialcarbine","Özel Karabina"],
+  ["weapon_bullpuprifle","Bullpup Tüfek"],["weapon_compactrifle","Kompakt Tüfek"],
+  ["weapon_specialcarbine_mk2","Özel Karabina Mk II"],["weapon_bullpuprifle_mk2","Bullpup Tüfek Mk II"],
+  ["weapon_militaryrifle","Askeri Tüfek"]
+]],
+["Hafif Makineliler",[
+  ["weapon_mg","Makineli Tüfek"],["weapon_combatmg","Combat Makineli"],
+  ["weapon_gusenberg","Thompson Hafif Otomatik"],["weapon_combatmg_mk2","Combat Makineli Mk II"]
+]],
+["Keskin Nişancı Tüfekleri",[
+  ["weapon_sniperrifle","Keskin Nişancı Tüfeği"],["weapon_heavysniper","Ağır Keskin Nişancı Tüfeği"],
+  ["weapon_marksmanrifle","Nişancı Tüfeği"],["weapon_remotesniper","Uzaktan Kumandalı Keskin Nişancı Tüfeği"],
+  ["weapon_heavysniper_mk2","Ağır Keskin Nişancı Tüfeği Mk II"],["weapon_marksmanrifle_mk2","Nişancı Tüfeği Mk II"]
+]],
+["Ağır Silahlar",[
+  ["weapon_rpg","RPG"],["weapon_grenadelauncher","Bombaatar"],["weapon_grenadelauncher_smoke","Dumanlı Bombaatar"],
+  ["weapon_minigun","Minigun"],["weapon_firework","Havai Fişek Atarı"],["weapon_railgun","Raylı Silah"],
+  ["weapon_railgunxm3","Raylı Silah XM3"],["weapon_hominglauncher","Güdümlü Roketatar"],
+  ["weapon_compactlauncher","Kompakt Bombaatar"],["weapon_rayminigun","Widowmaker"]
+]],
+["Fırlatılan Silahlar",[
+  ["weapon_grenade","El Bombası"],["weapon_bzgas","BZ Gazı"],["weapon_molotov","Molotof Kokteyli"],
+  ["weapon_stickybomb","C4"],["weapon_proxmine","Yakınlık Mayını"],["weapon_snowball","Kar Topu"],
+  ["weapon_pipebomb","Boru Bomba"],["weapon_ball","Top"],["weapon_smokegrenade","Duman Bombası"],
+  ["weapon_flare","İşaret Fişeği (El Tipi)"]
+]],
+["Diğer Silahlar",[
+  ["weapon_petrolcan","Benzin Bidonu"],["weapon_fireextinguisher","Yangın Söndürücü"],
+  ["weapon_hazardcan","Tehlikeli Bidon"]
+]],
+["Silah Eklentileri (Genel)",[
+  ["clip_attachment","Şarjör"],["drum_attachment","Tambur"],["flashlight_attachment","El Feneri (Silah)"],
+  ["suppressor_attachment","Susturucu"],["smallscope_attachment","Küçük Dürbün"],["medscope_attachment","Orta Dürbün"],
+  ["largescope_attachment","Büyük Dürbün"],["holoscope_attachment","Holografik Nişangah"],
+  ["advscope_attachment","Gelişmiş Dürbün"],["nvscope_attachment","Gece Görüş Dürbünü"],
+  ["thermalscope_attachment","Termal Dürbün"],["flat_muzzle_brake","Düz Namlu Freni"],
+  ["tactical_muzzle_brake","Taktik Namlu Freni"],["fat_end_muzzle_brake","Kalın Uçlu Namlu Freni"],
+  ["precision_muzzle_brake","Hassas Namlu Freni"],["heavy_duty_muzzle_brake","Ağır Hizmet Tipi Namlu Freni"],
+  ["slanted_muzzle_brake","Eğik Namlu Freni"],["split_end_muzzle_brake","Yarık Uçlu Namlu Freni"],
+  ["squared_muzzle_brake","Kare Namlu Freni"],["bellend_muzzle_brake","Çan Uçlu Namlu Freni"],
+  ["barrel_attachment","Namlu"],["grip_attachment","Kabza"],["comp_attachment","Kompansatör"],
+  ["luxuryfinish_attachment","Lüks Kaplama"],["digicamo_attachment","Dijital Kamuflaj"],
+  ["brushcamo_attachment","Fırça Deseni Kamuflaj"],["woodcamo_attachment","Orman Kamuflajı"],
+  ["skullcamo_attachment","Kurukafa Kamuflajı"],["sessantacamo_attachment","Sessanta Nove Kamuflajı"],
+  ["perseuscamo_attachment","Perseus Kamuflajı"],["leopardcamo_attachment","Leopar Kamuflajı"],
+  ["zebracamo_attachment","Zebra Kamuflajı"],["geocamo_attachment","Geometrik Kamuflaj"],
+  ["boomcamo_attachment","Boom Kamuflajı"],["patriotcamo_attachment","Patriot Kamuflajı"]
+]],
+["Mühimmat",[
+  ["pistol_ammo","Tabanca Mermisi"],["rifle_ammo","Tüfek Mermisi"],["smg_ammo","Hafif Otomatik Mermisi"],
+  ["shotgun_ammo","Pompalı Tüfek Mermisi"],["mg_ammo","Makineli Mermisi"],["snp_ammo","Keskin Nişancı Mermisi"],
+  ["emp_ammo","EMP Mermisi"]
+]],
+["Kartlar & Belgeler",[
+  ["id_card","Kimlik Kartı"],["driver_license","Ehliyet"],["lawyerpass","Avukat Kartı"],
+  ["weaponlicense","Silah Ruhsatı"],["bank_card","Banka Kartı"],["security_card_01","Güvenlik Kartı A"],
+  ["security_card_02","Güvenlik Kartı B"]
+]],
+["Yiyecek",[
+  ["tosti","Kaşarlı Tost"],["twerks_candy","Twerks"],["snikkel_candy","Snikkel"],["sandwich","Sandviç"]
+]],
+["İçecek",[
+  ["water_bottle","Su Şişesi"],["coffee","Kahve"],["kurkakola","Kola"]
+]],
+["Alkol",[
+  ["beer","Bira"],["whiskey","Viski"],["vodka","Votka"],["grape","Üzüm"],["wine","Şarap"],["grapejuice","Üzüm Suyu"]
+]],
+["Uyuşturucular",[
+  ["joint","Esrar Sigarası"],["cokebaggy","Kokain Torbası"],["crack_baggy","Crack Torbası"],
+  ["xtcbaggy","Ecstasy Torbası"],["coke_brick","Kokain Kalıbı"],["weed_brick","Esrar Kalıbı"],
+  ["coke_small_brick","Kokain Paketi"],["oxy","Reçete İle Oksikodon"],["meth","Metamfetamin"],
+  ["rolling_paper","Sigara Kağıdı"]
+]],
+["Tohum & Esrar",[
+  ["weed_whitewidow","White Widow 2g"],["weed_skunk","Skunk 2g"],["weed_purplehaze","Purple Haze 2g"],
+  ["weed_ogkush","OGKush 2g"],["weed_amnesia","Amnesia 2g"],["weed_ak47","AK47 2g"],
+  ["weed_whitewidow_seed","White Widow Tohumu"],["weed_skunk_seed","Skunk Tohumu"],
+  ["weed_purplehaze_seed","Purple Haze Tohumu"],["weed_ogkush_seed","OGKush Tohumu"],
+  ["weed_amnesia_seed","Amnesia Tohumu"],["weed_ak47_seed","AK47 Tohumu"],
+  ["empty_weed_bag","Boş Esrar Torbası"],["weed_nutrition","Bitki Gübresi"]
+]],
+["Malzeme",[
+  ["plastic","Plastik"],["metalscrap","Metal Hurdası"],["weapon_part","Silah Parçası","new"],
+  ["copper","Bakır"],["aluminum","Alüminyum"],["aluminumoxide","Alüminyum Tozu"],["iron","Demir"],
+  ["ironoxide","Demir Tozu"],["steel","Çelik"],["rubber","Kauçuk"],["glass","Cam"]
+]],
+["Aletler",[
+  ["lockpick","Maymuncuk"],["advancedlockpick","Gelişmiş Maymuncuk"],["electronickit","Elektronik Kit"],
+  ["gatecrack","Kapı Kırıcı Yazılım"],["thermite","Termit"],["trojan_usb","Truva Atı USB"],
+  ["screwdriverset","Alet Çantası"],["drill","Matkap"]
+]],
+["Araç Aletleri",[
+  ["nitrous","Nitro"],["repairkit","Tamir Kiti"],["advancedrepairkit","Gelişmiş Tamir Kiti"],
+  ["cleaningkit","Temizlik Kiti"],["tunerlaptop","Tuning Çipi"],["harness","Yarış Kemeri"],
+  ["jerry_can","Bidon 20L"],["tirerepairkit","Lastik Tamir Kiti"]
+]],
+["Tamirci Parçaları",[
+  ["veh_toolbox","Alet Kutusu"],["veh_armor","Zırh"],["veh_brakes","Frenler"],["veh_engine","Motor"],
+  ["veh_suspension","Süspansiyon"],["veh_transmission","Şanzıman"],["veh_turbo","Turbo"],
+  ["veh_interior","İç Mekan"],["veh_exterior","Dış Görünüm"],["veh_wheels","Jantlar"],["veh_neons","Neon"],
+  ["veh_xenons","Xenon"],["veh_tint","Cam Filmi"],["veh_plates","Plakalar"]
+]],
+["İlaç",[
+  ["firstaid","İlk Yardım Çantası"],["bandage","Bandaj"],["ifaks","IFAK"],["painkillers","Ağrı Kesici"],
+  ["walkstick","Baston"]
+]],
+["İletişim",[
+  ["phone","Telefon"],["radio","Telsiz"],["iphone","iPhone"],["samsungphone","Samsung S10"],
+  ["laptop","Laptop"],["tablet","Tablet"],["fitbit","Fitbit"],["radioscanner","Telsiz Tarayıcı"],
+  ["pinger","Konum Vericisi"],["cryptostick","Kripto Bellek"]
+]],
+["Hırsızlık & Mücevher",[
+  ["rolex","Altın Saat"],["diamond_ring","Elmas Yüzük"],["diamond","Elmas"],["goldchain","Altın Kolye"],
+  ["tenkgoldchain","10 Ayar Altın Kolye"],["goldbar","Altın Külçe"]
+]],
+["Polis Aletleri",[
+  ["armor","Zırh"],["heavyarmor","Ağır Zırh"],["handcuffs","Kelepçe"],["police_stormram","Kapı Kırıcı"],
+  ["empty_evidence_bag","Boş Delil Torbası"],["filled_evidence_bag","Delil Torbası"]
+]],
+["Havai Fişek",[
+  ["firework1","2Brothers"],["firework2","Poppelers"],["firework3","WipeOut"],["firework4","Weeping Willow"]
+]],
+["Dalış & Deniz",[
+  ["dendrogyra_coral","Dendrogyra"],["antipatharia_coral","Antipatharia"],["diving_gear","Dalış Ekipmanı"],
+  ["diving_fill","Dalış Tüpü"]
+]],
+["Diğer",[
+  ["casinochips","Kumarhane Çipi"],["stickynote","Yapışkan Not"],["moneybag","Para Torbası"],
+  ["parachute","Paraşüt"],["binoculars","Dürbün"],["lighter","Çakmak"],["certificate","Sertifika"],
+  ["markedbills","İşaretli Para"],["labkey","Anahtar"],["printerdocument","Belge"],["newscam","Haber Kamerası"],
+  ["newsmic","Haber Mikrofonu"],["newsbmic","Boom Mikrofon"]
+]],
+["Üretim Tezgahları",[
+  ["item_bench","Üretim Tezgahı"],["attachment_bench","Parça Üretim Tezgahı"]
+]],
+];
+
+const TINTS = ["Silah Kaplamaları (Tint)",[
+  ["weapontint_0","Varsayılan Kaplama"],["weapontint_1","Yeşil Kaplama"],["weapontint_2","Altın Kaplama"],
+  ["weapontint_3","Pembe Kaplama"],["weapontint_4","Ordu Kaplaması"],["weapontint_5","LSPD Kaplaması"],
+  ["weapontint_6","Turuncu Kaplama"],["weapontint_7","Platin Kaplama"],
+  ["weapontint_mk2_0","Klasik Siyah Kaplama"],["weapontint_mk2_1","Klasik Gri Kaplama"],
+  ["weapontint_mk2_2","Klasik İki Ton Kaplama"],["weapontint_mk2_3","Klasik Beyaz Kaplama"],
+  ["weapontint_mk2_4","Klasik Bej Kaplama"],["weapontint_mk2_5","Klasik Yeşil Kaplama"],
+  ["weapontint_mk2_6","Klasik Mavi Kaplama"],["weapontint_mk2_7","Klasik Toprak Kaplama"],
+  ["weapontint_mk2_8","Klasik Kahve & Siyah Kaplama"],["weapontint_mk2_9","Kırmızı Kontrast Kaplama"],
+  ["weapontint_mk2_10","Mavi Kontrast Kaplama"],["weapontint_mk2_11","Sarı Kontrast Kaplama"],
+  ["weapontint_mk2_12","Turuncu Kontrast Kaplama"],["weapontint_mk2_13","Parlak Pembe Kaplama"],
+  ["weapontint_mk2_14","Parlak Mor & Sarı Kaplama"],["weapontint_mk2_15","Parlak Turuncu Kaplama"],
+  ["weapontint_mk2_16","Parlak Yeşil & Mor Kaplama"],["weapontint_mk2_17","Parlak Kırmızı Detaylı Kaplama"],
+  ["weapontint_mk2_18","Parlak Yeşil Detaylı Kaplama"],["weapontint_mk2_19","Parlak Camgöbeği Detaylı Kaplama"],
+  ["weapontint_mk2_20","Parlak Sarı Detaylı Kaplama"],["weapontint_mk2_21","Parlak Kırmızı & Beyaz Kaplama"],
+  ["weapontint_mk2_22","Parlak Mavi & Beyaz Kaplama"],["weapontint_mk2_23","Metalik Altın Kaplama"],
+  ["weapontint_mk2_24","Metalik Platin Kaplama"],["weapontint_mk2_25","Metalik Gri & Leylak Kaplama"],
+  ["weapontint_mk2_26","Metalik Mor & Yeşil Kaplama"],["weapontint_mk2_27","Metalik Kırmızı Kaplama"],
+  ["weapontint_mk2_28","Metalik Yeşil Kaplama"],["weapontint_mk2_29","Metalik Mavi Kaplama"],
+  ["weapontint_mk2_30","Metalik Beyaz & Turkuaz Kaplama"],["weapontint_mk2_31","Metalik Turuncu & Sarı Kaplama"],
+  ["weapontint_mk2_32","Metalik Kırmızı ve Sarı Kaplama"]
+]];
+
+const slug = s => s.toLowerCase().replace(/ı/g,'i').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'-');
+
+function rowHTML([c,n,f]){
+  return `<tr class="row" data-s="${(c+' '+n).toLowerCase()}">
+    <td class="code">${c}</td><td class="name">${n}</td>
+    <td class="flag">${f==='new' ? '<span class="badge">yeni</span>' : ''}</td>
+  </tr>`;
+}
+
+function sectionHTML(title, items, collapsed){
+  const id = slug(title);
+  const rows = items.map(rowHTML).join('');
+  const head = `<h2>${title}</h2><span class="catcount">${items.length} eşya</span>${collapsed?'<span class="arrow">▸</span>':''}`;
+  const body = `<div class="tablewrap"><table><tbody>${rows}</tbody></table></div><p class="empty" hidden>Eşleşme yok.</p>`;
+  if(collapsed){
+    return `<details class="cat" id="${id}"><summary class="cathead">${head}</summary>${body}</details>`;
+  }
+  return `<section class="cat" id="${id}"><div class="cathead">${head}</div>${body}</section>`;
+}
+
+const allSections = [...DATA, TINTS];
+document.getElementById('cats').innerHTML = allSections
+  .map(([t,items],i)=>sectionHTML(t,items, t===TINTS[0])).join('');
+
+const totalCount = allSections.reduce((a,[,items])=>a+items.length,0);
+document.getElementById('count').textContent = totalCount + ' eşya';
+
+document.getElementById('chips').innerHTML = allSections
+  .map(([t])=>`<a class="chip" href="#${slug(t)}">${t}</a>`).join('');
+
+const q = document.getElementById('q');
+q.addEventListener('input', () => {
+  const term = q.value.trim().toLowerCase();
+  document.querySelectorAll('.cat').forEach(cat=>{
+    let visible = 0;
+    cat.querySelectorAll('tr.row').forEach(tr=>{
+      const hit = !term || tr.dataset.s.includes(term);
+      tr.classList.toggle('nomatch', !hit);
+      if(hit) visible++;
+    });
+    cat.querySelector('.empty').hidden = visible !== 0;
+    cat.hidden = term && visible === 0;
+    if(term && visible && cat.tagName==='DETAILS') cat.open = true;
+  });
+  document.getElementById('count').textContent = term
+    ? [...document.querySelectorAll('tr.row:not(.nomatch)')].length + ' / ' + totalCount + ' eşya'
+    : totalCount + ' eşya';
+});
+
+document.getElementById('chips').addEventListener('click', e=>{
+  const a = e.target.closest('a'); if(!a) return;
+  const target = document.querySelector(a.getAttribute('href'));
+  if(target && target.tagName==='DETAILS') target.open = true;
+});
+</script>
