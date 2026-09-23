@@ -1,123 +1,202 @@
-<title>Eşya Kod Rehberi</title>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apocalypse RP — Admin Rehberi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#f6f3ee; --surface:#ffffff; --surface-2:#ece5d8; --border:#ddd3bf;
+  --bg:#f6f3ee; --surface:#fff; --surface-2:#ece5d8; --border:#ddd3bf;
   --text:#241f1a; --text-dim:#6f6459; --accent:#d9531e; --accent-ink:#fff8f2;
   --good:#1a7a42; --good-bg:#e1f3e6; --mono-bg:#eee7d8; --shadow:0 1px 2px rgba(36,31,26,.06);
+  --blue:#1a5fa8; --blue-bg:#e3edf8; --purple:#7a1a9a; --purple-bg:#f3e3f8;
+  --orange:#c47000; --orange-bg:#fdf0d8;
 }
-@media (prefers-color-scheme: dark){
+@media(prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#15120f; --surface:#1e1a16; --surface-2:#262019; --border:#39301f;
     --text:#f1ece2; --text-dim:#a89a86; --accent:#ff7a3d; --accent-ink:#1c1108;
     --good:#4ade80; --good-bg:rgba(74,222,128,.14); --mono-bg:#262019; --shadow:0 1px 2px rgba(0,0,0,.35);
+    --blue:#60a5fa; --blue-bg:rgba(96,165,250,.12); --purple:#c084fc; --purple-bg:rgba(192,132,252,.12);
+    --orange:#fb923c; --orange-bg:rgba(251,146,60,.12);
   }
 }
-:root[data-theme="dark"]{
-  --bg:#15120f; --surface:#1e1a16; --surface-2:#262019; --border:#39301f;
-  --text:#f1ece2; --text-dim:#a89a86; --accent:#ff7a3d; --accent-ink:#1c1108;
-  --good:#4ade80; --good-bg:rgba(74,222,128,.14); --mono-bg:#262019; --shadow:0 1px 2px rgba(0,0,0,.35);
-}
 *{box-sizing:border-box;}
-body{
-  background:var(--bg); color:var(--text); margin:0; padding-inline:16px;
-  font-family:'IBM Plex Sans',system-ui,sans-serif; line-height:1.45;
-}
-h1,h2{font-family:'Oswald',system-ui,sans-serif; text-wrap:balance; margin:0;}
+body{background:var(--bg);color:var(--text);margin:0;padding-inline:16px;font-family:'IBM Plex Sans',system-ui,sans-serif;line-height:1.45;}
+h1,h2,h3{font-family:'Oswald',system-ui,sans-serif;text-wrap:balance;margin:0;}
 code,.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
 a{color:var(--accent);}
 
-.wrap{max-width:920px; margin:0 auto; padding-block:28px 60px;}
+.wrap{max-width:960px;margin:0 auto;padding-block:28px 60px;}
 
-header.top{position:sticky; top:0; background:var(--bg); padding-block:16px 12px; z-index:5; border-bottom:1px solid var(--border);}
-.eyebrow{font-family:'Oswald',system-ui,sans-serif; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600;}
-h1{font-size:clamp(1.5rem,4vw,2.1rem); font-weight:700; letter-spacing:.01em; margin-top:2px;}
-.sub{color:var(--text-dim); font-size:.92rem; margin-top:6px; max-width:60ch;}
+/* ── Header ── */
+header.top{position:sticky;top:0;background:var(--bg);padding-block:16px 0;z-index:10;border-bottom:1px solid var(--border);}
+.eyebrow{font-family:'Oswald',system-ui,sans-serif;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+h1{font-size:clamp(1.4rem,3.5vw,2rem);font-weight:700;letter-spacing:.01em;margin-top:2px;}
+.sub{color:var(--text-dim);font-size:.9rem;margin-top:4px;}
 
-.searchrow{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; align-items:center;}
-#q{
-  flex:1 1 240px; min-width:0; background:var(--surface); border:1px solid var(--border);
-  color:var(--text); padding:10px 14px; border-radius:8px; font:inherit; font-size:.95rem;
+/* ── Tabs ── */
+.tabs{display:flex;gap:0;margin-top:14px;border-bottom:2px solid var(--surface-2);}
+.tab-btn{
+  background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;
+  padding:10px 20px;font:inherit;font-size:.92rem;font-weight:600;color:var(--text-dim);
+  cursor:pointer;letter-spacing:.02em;transition:all .15s;white-space:nowrap;
 }
-#q:focus{outline:2px solid var(--accent); outline-offset:1px;}
-#count{font-size:.82rem; color:var(--text-dim); white-space:nowrap;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
 
-.chips{display:flex; gap:6px; overflow-x:auto; padding-block:12px 2px; margin:0 -2px; scrollbar-width:thin;}
-.chip{
-  flex:none; font-size:.78rem; padding:5px 11px; border-radius:99px; border:1px solid var(--border);
-  background:var(--surface); color:var(--text-dim); text-decoration:none; white-space:nowrap;
+/* ── Search row ── */
+.searchrow{display:flex;gap:10px;margin-top:14px;margin-bottom:2px;flex-wrap:wrap;align-items:center;}
+#q,#qcmd{
+  flex:1 1 240px;min-width:0;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:9px 14px;border-radius:8px;font:inherit;font-size:.93rem;
 }
-.chip:hover{border-color:var(--accent); color:var(--text);}
+#q:focus,#qcmd:focus{outline:2px solid var(--accent);outline-offset:1px;}
+#count,#countcmd{font-size:.82rem;color:var(--text-dim);white-space:nowrap;}
 
-.note{
-  background:var(--surface); border:1px solid var(--border); border-left:3px solid var(--accent);
-  border-radius:0 8px 8px 0; padding:12px 16px; margin-block:20px; font-size:.88rem; color:var(--text-dim);
-}
-.note b{color:var(--text); font-weight:600;}
-.note code{background:var(--mono-bg); padding:1px 5px; border-radius:4px; color:var(--text);}
+/* ── Tab panels ── */
+.tab-panel{display:none;padding-top:16px;}
+.tab-panel.active{display:block;}
 
-section.cat, details.cat{margin-top:26px; scroll-margin-top:150px;}
-.cathead{
-  display:flex; align-items:baseline; gap:10px; padding-bottom:8px; margin-bottom:2px;
-  border-bottom:2px solid var(--surface-2);
-}
-h2{font-size:1.05rem; letter-spacing:.03em; text-transform:uppercase;}
-.catcount{font-size:.78rem; color:var(--text-dim); font-family:'IBM Plex Mono',monospace;}
-details.cat summary{cursor:pointer; list-style:none;}
+/* ── Chips ── */
+.chips{display:flex;gap:6px;overflow-x:auto;padding-block:8px 2px;margin:0 -2px;scrollbar-width:thin;}
+.chip{flex:none;font-size:.78rem;padding:5px 12px;border-radius:99px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim);text-decoration:none;white-space:nowrap;}
+.chip:hover{border-color:var(--accent);color:var(--text);}
+
+/* ── Note ── */
+.note{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:12px 16px;margin-block:16px 20px;font-size:.88rem;color:var(--text-dim);}
+.note b{color:var(--text);font-weight:600;}
+.note code{background:var(--mono-bg);padding:1px 5px;border-radius:4px;color:var(--text);}
+
+/* ── Item table sections ── */
+section.cat,details.cat{margin-top:22px;scroll-margin-top:160px;}
+.cathead{display:flex;align-items:baseline;gap:10px;padding-bottom:8px;margin-bottom:2px;border-bottom:2px solid var(--surface-2);}
+h2{font-size:1rem;letter-spacing:.03em;text-transform:uppercase;}
+.catcount{font-size:.78rem;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;}
+details.cat summary{cursor:pointer;list-style:none;}
 details.cat summary::-webkit-details-marker{display:none;}
 details.cat summary.cathead{align-items:center;}
-details.cat summary .arrow{margin-left:auto; color:var(--text-dim); font-size:.8rem; transition:transform .15s;}
+details.cat summary .arrow{margin-left:auto;color:var(--text-dim);font-size:.8rem;transition:transform .15s;}
 details.cat[open] summary .arrow{transform:rotate(90deg);}
 
 .tablewrap{overflow-x:auto;}
-table{width:100%; border-collapse:collapse; margin-top:4px;}
+table{width:100%;border-collapse:collapse;margin-top:4px;}
 tr.row{border-bottom:1px solid var(--surface-2);}
 tr.row:hover{background:var(--surface);}
-td{padding:8px 6px; vertical-align:top; font-size:.92rem;}
-td.code{
-  font-family:'IBM Plex Mono',monospace; font-size:.82rem; color:var(--text);
-  background:var(--mono-bg); border-radius:6px; white-space:nowrap; width:1%;
-}
+td{padding:8px 6px;vertical-align:top;font-size:.9rem;}
+td.code{font-family:'IBM Plex Mono',monospace;font-size:.81rem;color:var(--text);background:var(--mono-bg);border-radius:6px;white-space:nowrap;width:1%;}
 td.name{color:var(--text);}
-td.flag{width:1%; white-space:nowrap; text-align:right;}
-.badge{
-  display:inline-block; font-size:.68rem; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
-  padding:2px 8px; border-radius:99px; background:var(--good-bg); color:var(--good); border:1px solid currentColor;
-}
+td.flag{width:1%;white-space:nowrap;text-align:right;}
+.badge{display:inline-block;font-size:.67rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:var(--good-bg);color:var(--good);border:1px solid currentColor;}
+.badge.yeni{background:var(--good-bg);color:var(--good);}
 tr.nomatch{display:none;}
-p.empty{color:var(--text-dim); font-size:.9rem; padding:20px 4px;}
+p.empty{color:var(--text-dim);font-size:.9rem;padding:20px 4px;}
 
-footer{margin-top:40px; padding-top:16px; border-top:1px solid var(--border); color:var(--text-dim); font-size:.8rem;}
+/* ── Command Cards ── */
+.cmd-group{margin-top:28px;scroll-margin-top:160px;}
+.cmd-group-header{
+  display:flex;align-items:center;gap:10px;padding:10px 16px;
+  border-radius:10px 10px 0 0;border:1px solid var(--border);
+  border-bottom:none;background:var(--surface-2);
+}
+.cmd-group-icon{font-size:1.2rem;}
+.cmd-group-title{font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:.05em;text-transform:uppercase;}
+.cmd-group-count{font-size:.75rem;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;margin-left:auto;}
+.cmd-cards{display:grid;gap:0;border:1px solid var(--border);border-radius:0 0 10px 10px;overflow:hidden;}
+.cmd-card{
+  padding:14px 18px;border-bottom:1px solid var(--surface-2);
+  background:var(--surface);transition:background .12s;
+}
+.cmd-card:last-child{border-bottom:none;}
+.cmd-card:hover{background:var(--surface-2);}
+.cmd-card.nomatch-cmd{display:none;}
+
+.cmd-top{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.cmd-name{
+  font-family:'IBM Plex Mono',monospace;font-size:.95rem;font-weight:600;
+  color:var(--accent);background:var(--mono-bg);padding:3px 10px;border-radius:6px;
+  white-space:nowrap;
+}
+.cmd-perm{
+  font-size:.7rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;white-space:nowrap;align-self:center;
+}
+.perm-admin{background:var(--orange-bg);color:var(--orange);border:1px solid currentColor;}
+.perm-superadmin{background:var(--purple-bg);color:var(--purple);border:1px solid currentColor;}
+.perm-all{background:var(--blue-bg);color:var(--blue);border:1px solid currentColor;}
+.cmd-desc{font-size:.88rem;color:var(--text-dim);margin-top:7px;line-height:1.5;}
+.cmd-syntax{
+  margin-top:8px;background:var(--mono-bg);border-radius:7px;
+  padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--text);
+  border:1px solid var(--border);white-space:pre-wrap;word-break:break-all;
+}
+.cmd-args{margin-top:7px;display:flex;flex-direction:column;gap:3px;}
+.cmd-arg{font-size:.82rem;color:var(--text-dim);}
+.cmd-arg code{background:var(--mono-bg);padding:1px 5px;border-radius:4px;color:var(--text);font-size:.8rem;}
+
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--text-dim);font-size:.8rem;}
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <header class="top">
-    <div class="eyebrow">codderdragon_inventory</div>
-    <h1>Eşya Kod Rehberi</h1>
-    <div class="sub">Bugün Türkçeleştirilen tüm eşyaların <code class="mono">/giveitem</code> kodu ↔ oyun içi görünen ismi. Admin panelinde ara, bul, ver.</div>
+    <div class="eyebrow">Apocalypse RP · CodderDragon</div>
+    <h1>Admin & Eşya Rehberi</h1>
+    <div class="sub">Tüm admin komutları ve eşya kodları tek sayfada.</div>
+    <nav class="tabs" id="tabs">
+      <button class="tab-btn active" data-tab="items">📦 Eşya Rehberi</button>
+      <button class="tab-btn" data-tab="commands">⚙️ Admin Komutları</button>
+    </nav>
+  </header>
+
+  <!-- ════════════════════════════════════════
+       TAB 1: EŞYA REHBERİ
+       ════════════════════════════════════════ -->
+  <div class="tab-panel active" id="tab-items">
     <div class="searchrow">
       <input id="q" type="text" placeholder="Kod ya da isimle ara… (örn. pistol, esrar, sarjor)" autocomplete="off">
       <span id="count"></span>
     </div>
     <nav class="chips" id="chips"></nav>
-  </header>
 
-  <p class="note">
-    <b>Kullanım:</b> <code>/giveitem [id] [kod] [miktar]</code> — komuta koyacağın kısım <b>Kod</b> sütunu.
-    Bazı silahların ismi kasıtlı olarak İngilizce/marka ismi bırakıldı çünkü GTA'nın kendi özel silah isimleri
-    (ör. <b>Walther P99</b>, <b>Tec-9</b>, <b>Violence</b>, <b>Widowmaker</b>) — bunlar çevrilmedi, tıpkı
-    <b>iPhone</b> / <b>Samsung S10</b> gibi. Yeşil <span class="badge">yeni</span> etiketli satır bu oturumda
-    eksik olduğu için sonradan eklenen eşya.
-  </p>
+    <p class="note">
+      <b>Kullanım:</b> <code>/giveitem [id] [kod] [miktar]</code> — komuta koyacağın kısım <b>Kod</b> sütunu.
+      Yeşil <span class="badge yeni">yeni</span> etiket bu oturumda eklenen eşyaları gösterir.
+    </p>
 
-  <div id="cats"></div>
+    <div id="cats"></div>
+    <footer id="item-footer"></footer>
+  </div>
 
-  <footer>231 eşya · qb-core/shared/items.lua içinden</footer>
+  <!-- ════════════════════════════════════════
+       TAB 2: ADMİN KOMUTLARI
+       ════════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-commands">
+    <div class="searchrow">
+      <input id="qcmd" type="text" placeholder="Komut ara… (örn. video, revive, zombie)" autocomplete="off">
+      <span id="countcmd"></span>
+    </div>
+    <nav class="chips" id="cmd-chips"></nav>
+
+    <p class="note">
+      <b>Yetki seviyeleri:</b>
+      <span class="cmd-perm perm-admin" style="margin-left:4px">Admin</span> grup.admin ve üzeri ·
+      <span class="cmd-perm perm-superadmin">Süper Admin</span> grup.superadmin ve üzeri ·
+      <span class="cmd-perm perm-all">Herkese Açık</span> oyuncu kullanabilir.
+      Bazı komutlar ACE iznine (<code>rpmedia.command</code>) bağlıdır.
+    </p>
+
+    <div id="cmd-groups"></div>
+    <footer id="cmd-footer"></footer>
+  </div>
 </div>
 
 <script>
-// c = kod (giveitem), n = Türkçe isim, f = 'new' rozeti (opsiyonel)
+/* ════════════════════════════════════════════════════════════
+   EŞYA VERİSİ
+   ════════════════════════════════════════════════════════════ */
 const DATA = [
 ["Yakın Dövüş",[
   ["weapon_unarmed","Yumruk"],["weapon_dagger","Hançer"],["weapon_bat","Beyzbol Sopası"],
@@ -167,8 +246,8 @@ const DATA = [
 ]],
 ["Keskin Nişancı Tüfekleri",[
   ["weapon_sniperrifle","Keskin Nişancı Tüfeği"],["weapon_heavysniper","Ağır Keskin Nişancı Tüfeği"],
-  ["weapon_marksmanrifle","Nişancı Tüfeği"],["weapon_remotesniper","Uzaktan Kumandalı Keskin Nişancı Tüfeği"],
-  ["weapon_heavysniper_mk2","Ağır Keskin Nişancı Tüfeği Mk II"],["weapon_marksmanrifle_mk2","Nişancı Tüfeği Mk II"]
+  ["weapon_marksmanrifle","Nişancı Tüfeği"],["weapon_remotesniper","Uzaktan Kumandalı Keskin Nişancı"],
+  ["weapon_heavysniper_mk2","Ağır Keskin Nişancı Mk II"],["weapon_marksmanrifle_mk2","Nişancı Tüfeği Mk II"]
 ]],
 ["Ağır Silahlar",[
   ["weapon_rpg","RPG"],["weapon_grenadelauncher","Bombaatar"],["weapon_grenadelauncher_smoke","Dumanlı Bombaatar"],
@@ -282,6 +361,14 @@ const DATA = [
   ["dendrogyra_coral","Dendrogyra"],["antipatharia_coral","Antipatharia"],["diving_gear","Dalış Ekipmanı"],
   ["diving_fill","Dalış Tüpü"]
 ]],
+["Radyasyon & Sağlık",[
+  ["geiger_counter","Geiger Sayacı","new"],["dosimeter","Dozimetre","new"],
+  ["antidote","Zombi Virüsü Panzehiri","new"]
+]],
+["Lore & Medya",[
+  ["harita","Taktik Harita","new"],
+  ["video_kaseti","Video Kaseti","new"],["ses_kaseti","Ses Kaseti","new"]
+]],
 ["Diğer",[
   ["casinochips","Kumarhane Çipi"],["stickynote","Yapışkan Not"],["moneybag","Para Torbası"],
   ["parachute","Paraşüt"],["binoculars","Dürbün"],["lighter","Çakmak"],["certificate","Sertifika"],
@@ -316,15 +403,224 @@ const TINTS = ["Silah Kaplamaları (Tint)",[
   ["weapontint_mk2_32","Metalik Kırmızı ve Sarı Kaplama"]
 ]];
 
-const slug = s => s.toLowerCase().replace(/ı/g,'i').replace(/ş/g,'s').replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c').replace(/[^a-z0-9]+/g,'-');
+/* ════════════════════════════════════════════════════════════
+   ADMİN KOMUT VERİSİ
+   ════════════════════════════════════════════════════════════
+   Yapı: { icon, title, commands: [ { cmd, syntax, desc, perm, args? } ] }
+   perm: 'admin' | 'superadmin' | 'all'
+   ════════════════════════════════════════════════════════════ */
+const COMMANDS = [
+  {
+    icon: '📡',
+    title: 'RPMedia — Lore Medya Sistemi',
+    slug: 'rpmedia',
+    commands: [
+      {
+        cmd: '/fotover',
+        syntax: '/fotover [1-2-3] [URL]',
+        desc: 'Belirtilen oyuncuların ekranında polaroid fotoğraf gösterir.',
+        perm: 'admin',
+        args: [
+          ['1-2-3', 'Tire ile ayrılmış sunucu ID listesi (ör: 1-3-7)'],
+          ['URL', 'Fotoğraf URL adresi — https:// ile başlamalı'],
+        ]
+      },
+      {
+        cmd: '/varyantses',
+        syntax: '/varyantses [1-2-3] [URL]',
+        desc: 'Belirtilen oyunculara ses kaseti oynatıcı UI açar. MP3 URL kullanılır.',
+        perm: 'admin',
+        args: [
+          ['1-2-3', 'Tire ile ayrılmış sunucu ID listesi'],
+          ['URL', 'MP3 URL adresi — https:// ile başlamalı'],
+        ]
+      },
+      {
+        cmd: '/varyantvideo',
+        syntax: '/varyantvideo [1-2-3] [URL veya dosyaadi.mp4]',
+        desc: 'Belirtilen oyunculara tablet ekranında video gösterir. Doğrudan MP4 URL veya <code>varyantvideolar/</code> klasöründeki dosya adı kullanılabilir.',
+        perm: 'admin',
+        args: [
+          ['1-2-3', 'Tire ile ayrılmış sunucu ID listesi'],
+          ['URL veya dosyaadi.mp4', 'https:// ile başlıyorsa URL olarak, yoksa yerel dosya adı olarak oynatılır'],
+        ]
+      },
+      {
+        cmd: '/varyantsesradius',
+        syntax: '/varyantsesradius [URL] [metre]',
+        desc: 'Komut kullanan adminin etrafındaki belirtilen metre içindeki tüm oyunculara ses kaseti açar.',
+        perm: 'admin',
+        args: [
+          ['URL', 'MP3 URL adresi'],
+          ['metre', 'Yarıçap (1–500 metre)'],
+        ]
+      },
+      {
+        cmd: '/varyantvideoradius',
+        syntax: '/varyantvideoradius [URL veya dosyaadi.mp4] [metre]',
+        desc: 'Komut kullanan adminin etrafındaki oyunculara video gösterir.',
+        perm: 'admin',
+        args: [
+          ['URL veya dosyaadi.mp4', 'Doğrudan URL veya varyantvideolar/ klasöründeki dosya adı'],
+          ['metre', 'Yarıçap (1–500 metre)'],
+        ]
+      },
+      {
+        cmd: '/videokasetver',
+        syntax: '/videokasetver [oyuncu-id] [dosyaadi.mp4] [adet]',
+        desc: 'Oyuncuya metadata gömülü <b>Video Kaseti</b> eşyası verir. Oyuncu kaseti kullandığında <b>tam ekran sinema modunda</b> video açılır — çıkış yoktur, video bitene kadar devam eder.',
+        perm: 'admin',
+        args: [
+          ['oyuncu-id', 'Tek bir sunucu ID (ör: 3)'],
+          ['dosyaadi.mp4', '<code>html/varyantvideolar/</code> klasöründeki dosya adı (ör: sorgu.mp4)'],
+          ['adet', 'Kaset adedi — max 10 (varsayılan: 1)'],
+        ]
+      },
+      {
+        cmd: '/seskasetver',
+        syntax: '/seskasetver [oyuncu-id] [dosyaadi.mp3] [adet]',
+        desc: 'Oyuncuya metadata gömülü <b>Ses Kaseti</b> eşyası verir. Oyuncu kaseti kullandığında kaset oynatıcı UI açılır.',
+        perm: 'admin',
+        args: [
+          ['oyuncu-id', 'Tek bir sunucu ID'],
+          ['dosyaadi.mp3', '<code>html/varyantsesler/</code> klasöründeki dosya adı (ör: radyo.mp3)'],
+          ['adet', 'Kaset adedi — max 10 (varsayılan: 1)'],
+        ]
+      },
+    ]
+  },
+  {
+    icon: '🧟',
+    title: 'Zombie Sistemi',
+    slug: 'zombie',
+    commands: [
+      {
+        cmd: '/zombied',
+        syntax: '/zombied',
+        desc: 'Zombi spawn menüsünü açar. Hangi bölgeye kaç zombi spawn edileceğini seçebilirsin.',
+        perm: 'admin',
+      },
+      {
+        cmd: '/zombietemizle',
+        syntax: '/zombietemizle',
+        desc: 'Haritadaki tüm zombileri anında temizler.',
+        perm: 'admin',
+      },
+      {
+        cmd: '/arastirma',
+        syntax: '/arastirma',
+        desc: 'Zombileri oyuncudan uzaklaştıran araştırma modunu aktifleştirir. Süre dolduğunda mod otomatik kapanır.',
+        perm: 'all',
+      },
+      {
+        cmd: '/arastirmabitir',
+        syntax: '/arastirmabitir',
+        desc: 'Aktif araştırma modunu erken sonlandırır.',
+        perm: 'all',
+      },
+    ]
+  },
+  {
+    icon: '☢️',
+    title: 'Radyasyon Sistemi',
+    slug: 'radyasyon',
+    commands: [
+      {
+        cmd: '/radyasyonalani',
+        syntax: '/radyasyonalani [bolgeAdi]',
+        desc: 'Belirtilen radyasyon bölgesini açar veya kapatır. Bölge adları <code>config.lua</code> dosyasında tanımlıdır.',
+        perm: 'admin',
+        args: [
+          ['bolgeAdi', 'Radyasyon bölgesinin config\'deki adı'],
+        ]
+      },
+    ]
+  },
+  {
+    icon: '🏥',
+    title: 'Sağlık & Hastalık Sistemi',
+    slug: 'saglik',
+    commands: [
+      {
+        cmd: '/revive',
+        syntax: '/revive [id]',
+        desc: 'Belirtilen oyuncuyu tamamen iyileştirir (sağlık, zırh, bayılma). ID boş bırakılırsa kendini iyileştirir.',
+        perm: 'admin',
+        args: [
+          ['id', 'Hedef oyuncu sunucu ID\'si (opsiyonel — boşsa kendin)'],
+        ]
+      },
+      {
+        cmd: '/virusver',
+        syntax: '/virusver [id] [hastalik] [evre]',
+        desc: 'Oyuncuya belirtilen hastalığı/virüsü bulaştırır.',
+        perm: 'admin',
+        args: [
+          ['id', 'Hedef oyuncu sunucu ID\'si'],
+          ['hastalik', '<code>zombi_virusu</code> · <code>grip</code> · <code>zehirlenme</code> · <code>sucicegi</code> · <code>enfeksiyon</code> · <code>kanamali</code>'],
+          ['evre', '<code>1</code> (hafif) · <code>2</code> (orta) · <code>3</code> (ağır) — varsayılan: 1'],
+        ]
+      },
+    ]
+  },
+  {
+    icon: '📦',
+    title: 'Loot Yönetim Sistemi',
+    slug: 'loot',
+    commands: [
+      {
+        cmd: '/lootadmin',
+        syntax: '/lootadmin',
+        desc: 'Loot yönetim panelini açar. Harita üzerindeki loot noktalarını düzenleyebilir, loot tablolarını güncelleyebilirsin.',
+        perm: 'admin',
+      },
+    ]
+  },
+  {
+    icon: '🌐',
+    title: 'İntBölge — Işınlanma Noktaları',
+    slug: 'intbolge',
+    commands: [
+      {
+        cmd: '/intbolge',
+        syntax: '/intbolge [isim]',
+        desc: 'Bulunduğun konuma belirtilen isimde bir ışınlanma noktası oluşturur. Oyuncular bu noktadan ışınlanabilir.',
+        perm: 'admin',
+        args: [
+          ['isim', 'Işınlanma noktasının benzersiz adı'],
+        ]
+      },
+      {
+        cmd: '/intbolgesil',
+        syntax: '/intbolgesil [isim1] [isim2]',
+        desc: 'İki nokta arasındaki bağlı ışınlanma noktasını siler.',
+        perm: 'admin',
+        args: [
+          ['isim1', '1. Işınlanma noktası adı'],
+          ['isim2', '2. Işınlanma noktası adı'],
+        ]
+      },
+    ]
+  },
+];
 
+/* ════════════════════════════════════════════════════════════
+   YARDIMCI FONKSİYONLAR
+   ════════════════════════════════════════════════════════════ */
+const slug = s => s.toLowerCase()
+  .replace(/ı/g,'i').replace(/ş/g,'s').replace(/ğ/g,'g')
+  .replace(/ü/g,'u').replace(/ö/g,'o').replace(/ç/g,'c')
+  .replace(/[^a-z0-9]+/g,'-');
+
+/* ════════════════════════════════════════════════════════════
+   EŞYA TAB RENDER
+   ════════════════════════════════════════════════════════════ */
 function rowHTML([c,n,f]){
   return `<tr class="row" data-s="${(c+' '+n).toLowerCase()}">
     <td class="code">${c}</td><td class="name">${n}</td>
-    <td class="flag">${f==='new' ? '<span class="badge">yeni</span>' : ''}</td>
+    <td class="flag">${f==='new'?'<span class="badge yeni">yeni</span>':''}</td>
   </tr>`;
 }
-
 function sectionHTML(title, items, collapsed){
   const id = slug(title);
   const rows = items.map(rowHTML).join('');
@@ -338,20 +634,21 @@ function sectionHTML(title, items, collapsed){
 
 const allSections = [...DATA, TINTS];
 document.getElementById('cats').innerHTML = allSections
-  .map(([t,items],i)=>sectionHTML(t,items, t===TINTS[0])).join('');
+  .map(([t,items]) => sectionHTML(t,items, t===TINTS[0])).join('');
 
-const totalCount = allSections.reduce((a,[,items])=>a+items.length,0);
+const totalCount = allSections.reduce((a,[,items]) => a+items.length, 0);
 document.getElementById('count').textContent = totalCount + ' eşya';
+document.getElementById('item-footer').textContent = totalCount + ' eşya · qb-core/shared/items.lua';
 
 document.getElementById('chips').innerHTML = allSections
-  .map(([t])=>`<a class="chip" href="#${slug(t)}">${t}</a>`).join('');
+  .map(([t]) => `<a class="chip" href="#${slug(t)}">${t}</a>`).join('');
 
 const q = document.getElementById('q');
 q.addEventListener('input', () => {
   const term = q.value.trim().toLowerCase();
-  document.querySelectorAll('.cat').forEach(cat=>{
+  document.querySelectorAll('#tab-items .cat').forEach(cat => {
     let visible = 0;
-    cat.querySelectorAll('tr.row').forEach(tr=>{
+    cat.querySelectorAll('tr.row').forEach(tr => {
       const hit = !term || tr.dataset.s.includes(term);
       tr.classList.toggle('nomatch', !hit);
       if(hit) visible++;
@@ -361,13 +658,99 @@ q.addEventListener('input', () => {
     if(term && visible && cat.tagName==='DETAILS') cat.open = true;
   });
   document.getElementById('count').textContent = term
-    ? [...document.querySelectorAll('tr.row:not(.nomatch)')].length + ' / ' + totalCount + ' eşya'
+    ? [...document.querySelectorAll('#tab-items tr.row:not(.nomatch)')].length + ' / ' + totalCount + ' eşya'
     : totalCount + ' eşya';
 });
 
-document.getElementById('chips').addEventListener('click', e=>{
+document.getElementById('chips').addEventListener('click', e => {
   const a = e.target.closest('a'); if(!a) return;
   const target = document.querySelector(a.getAttribute('href'));
   if(target && target.tagName==='DETAILS') target.open = true;
 });
+
+/* ════════════════════════════════════════════════════════════
+   KOMUT TAB RENDER
+   ════════════════════════════════════════════════════════════ */
+const permLabel = {
+  admin: '<span class="cmd-perm perm-admin">Admin</span>',
+  superadmin: '<span class="cmd-perm perm-superadmin">Süper Admin</span>',
+  all: '<span class="cmd-perm perm-all">Herkese Açık</span>',
+};
+
+function cmdCardHTML(c){
+  const argsHtml = c.args && c.args.length
+    ? `<div class="cmd-args">${c.args.map(([n,d]) => `<div class="cmd-arg"><code>[${n}]</code> — ${d}</div>`).join('')}</div>`
+    : '';
+  const searchData = (c.cmd+' '+(c.syntax||'')+' '+(c.desc||'')).toLowerCase();
+  return `<div class="cmd-card" data-s="${searchData}">
+    <div class="cmd-top">
+      <span class="cmd-name">${c.cmd}</span>
+      ${permLabel[c.perm]||''}
+    </div>
+    <div class="cmd-syntax">${c.syntax}</div>
+    <div class="cmd-desc">${c.desc}</div>
+    ${argsHtml}
+  </div>`;
+}
+
+function cmdGroupHTML(g){
+  const cards = g.commands.map(cmdCardHTML).join('');
+  const count = g.commands.length;
+  return `<div class="cmd-group" id="cmd-${g.slug}">
+    <div class="cmd-group-header">
+      <span class="cmd-group-icon">${g.icon}</span>
+      <span class="cmd-group-title">${g.title}</span>
+      <span class="cmd-group-count">${count} komut</span>
+    </div>
+    <div class="cmd-cards">${cards}</div>
+  </div>`;
+}
+
+document.getElementById('cmd-groups').innerHTML = COMMANDS.map(cmdGroupHTML).join('');
+
+const totalCmds = COMMANDS.reduce((a,g) => a+g.commands.length, 0);
+document.getElementById('countcmd').textContent = totalCmds + ' komut';
+document.getElementById('cmd-footer').textContent = totalCmds + ' admin komutu · codderdragon scripts';
+
+document.getElementById('cmd-chips').innerHTML = COMMANDS
+  .map(g => `<a class="chip" href="#cmd-${g.slug}">${g.icon} ${g.title.split('—')[0].trim()}</a>`).join('');
+
+const qcmd = document.getElementById('qcmd');
+qcmd.addEventListener('input', () => {
+  const term = qcmd.value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('.cmd-card').forEach(card => {
+    const hit = !term || card.dataset.s.includes(term);
+    card.classList.toggle('nomatch-cmd', !hit);
+    if(hit) visible++;
+  });
+  // Boş kalan grupları gizle
+  document.querySelectorAll('.cmd-group').forEach(grp => {
+    const anyVisible = [...grp.querySelectorAll('.cmd-card:not(.nomatch-cmd)')].length > 0;
+    grp.style.display = term && !anyVisible ? 'none' : '';
+  });
+  document.getElementById('countcmd').textContent = term
+    ? visible + ' / ' + totalCmds + ' komut'
+    : totalCmds + ' komut';
+});
+
+/* ════════════════════════════════════════════════════════════
+   TAB GEÇİŞİ
+   ════════════════════════════════════════════════════════════ */
+document.getElementById('tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn'); if(!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  // URL hash güncelle
+  history.replaceState(null,'','#'+btn.dataset.tab);
+});
+
+// Sayfa yüklenince hash'e göre tab aç
+if(location.hash === '#commands'){
+  document.querySelector('[data-tab="commands"]').click();
+}
 </script>
+</body>
+</html>
